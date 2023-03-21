@@ -1,0 +1,8 @@
+[
+{
+  "directory": "/home/adalberto/Downloads/tmp/edscorbot-cpp/build",
+  "command": "/usr/bin/aarch64-linux-gnu-g++  -I/home/adalberto/Downloads/tmp/edscorbot-cpp/edcontroller/.    -fPIC -DEDS_VERBOSE -g -std=c++17 -o CMakeFiles/test.dir/mocked_server.cpp.o -c /home/adalberto/Downloads/tmp/edscorbot-cpp/edcontroller/mocked_server.cpp",
+  "file": "/home/adalberto/Downloads/tmp/edscorbot-cpp/edcontroller/mocked_server.cpp",
+  "output": "CMakeFiles/test.dir/mocked_server.cpp.o"
+}
+]

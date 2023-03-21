@@ -1,0 +1,6 @@
+{
+    "cmake.sourceDirectory": "${workspaceFolder}/edcontroller",
+    "files.associations": {
+        "string": "cpp"
+    }
+}

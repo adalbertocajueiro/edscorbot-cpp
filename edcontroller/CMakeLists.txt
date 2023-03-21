@@ -22,7 +22,8 @@ set(LANGUAGE C_STANDARD)
 # Compile this module (standard C++ file, no additional dependencies)
 #add_library(test_target SHARED src/testModule.cpp)
 
-add_executable(test simple-controller.c)
+#add_executable(test simple-controller.c)
+add_executable(test mocked_server.cpp)
 #add_executable(mqtt_client src/mqtt_client.c)
 
 
@@ -45,7 +46,7 @@ target_include_directories(test PUBLIC ".")
 
 #TARGET_LINK_LIBRARIES(test_target PRIVATE ${DV_LIBRARIES})
 #message("###########DIRECTORIO###########3: ${CMAKE_CURRENT_SOURCE_DIR}")
-TARGET_LINK_LIBRARIES(test PRIVATE /home/enrique/mosquitto/build/lib/libmosquitto_static.a -lpthread)
+TARGET_LINK_LIBRARIES(test PRIVATE /home/adalberto/Downloads/tmp/mosquitto/lib/libmosquitto.a -lpthread /home/adalberto/jsoncpp/build/lib/libjsoncpp.a)
 
 #TARGET_LINK_LIBRARIES(mqtt_server )
 
