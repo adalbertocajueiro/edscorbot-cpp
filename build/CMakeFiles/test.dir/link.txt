@@ -1,1 +1,1 @@
-/usr/bin/aarch64-linux-gnu-g++    -fPIC -DEDS_VERBOSE -g CMakeFiles/test.dir/mocked_server.cpp.o -o test  /home/adalberto/Downloads/tmp/mosquitto/lib/libmosquitto.a -lpthread /home/adalberto/jsoncpp/build/lib/libjsoncpp.a 
+/usr/bin/aarch64-linux-gnu-g++    -fPIC -DEDS_VERBOSE -g CMakeFiles/test.dir/mocked_server.cpp.o -o test  /home/adalberto/Downloads/tmp/mosquitto/lib/libmosquitto.a -lpthread /home/adalberto/jsoncpp/build/lib/libjsoncpp.a /usr/bin/aarch64-linux-gnu-ranlib 

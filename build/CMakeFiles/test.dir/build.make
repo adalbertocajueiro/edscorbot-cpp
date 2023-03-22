@@ -94,6 +94,7 @@ test: CMakeFiles/test.dir/mocked_server.cpp.o
 test: CMakeFiles/test.dir/build.make
 test: /home/adalberto/Downloads/tmp/mosquitto/lib/libmosquitto.a
 test: /home/adalberto/jsoncpp/build/lib/libjsoncpp.a
+test: /usr/bin/aarch64-linux-gnu-ranlib
 test: CMakeFiles/test.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/adalberto/Downloads/tmp/edscorbot-cpp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX executable test"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/test.dir/link.txt --verbose=$(VERBOSE)

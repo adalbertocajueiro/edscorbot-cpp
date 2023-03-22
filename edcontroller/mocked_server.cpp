@@ -26,7 +26,7 @@ typedef struct
 progress_info progress;
 
 bool errorState = false;
-Client *owner;
+Client *owner = NULL;
 bool executingTrajectory = false;
 
 void parse_command(char *command, int *t, char *m, char *url, int *n,int* sleep);
@@ -322,7 +322,7 @@ void handle_response(struct mosquitto *mosq, void *obj, const struct mosquitto_m
 		{
 			case ARM_CHECK_STATUS:
 				printf("check status received. sending status back \n");
-				send_status();
+				//send_status();
 				break;
 			case ARM_CONNECT:
 				printf("connect received\n");
@@ -393,6 +393,8 @@ int main(int argc, char *argv[])
 
         subscribe_all_topics();
 		//mosquitto_subscribe(mosq, NULL, "/EDScorbot/commands", 0);
+
+		bool equal = owner != NULL;
 
 		string initial_info = meta_info_obj_to_str(ARM_METAINFO,CONTROLLER_NAME, (JointInfo *) metainfo);
 

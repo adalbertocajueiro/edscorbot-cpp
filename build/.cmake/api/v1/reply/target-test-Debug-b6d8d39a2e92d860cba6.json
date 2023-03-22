@@ -104,6 +104,11 @@
 				"backtrace" : 2,
 				"fragment" : "/home/adalberto/jsoncpp/build/lib/libjsoncpp.a",
 				"role" : "libraries"
+			},
+			{
+				"backtrace" : 2,
+				"fragment" : "/usr/bin/aarch64-linux-gnu-ranlib",
+				"role" : "libraries"
 			}
 		],
 		"language" : "CXX"
