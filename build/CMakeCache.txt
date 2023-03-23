@@ -218,7 +218,7 @@ edscorbot_test_BINARY_DIR:STATIC=/home/adalberto/Downloads/tmp/edscorbot-cpp/bui
 edscorbot_test_IS_TOP_LEVEL:STATIC=ON
 
 //Value Computed by CMake
-edscorbot_test_SOURCE_DIR:STATIC=/home/adalberto/Downloads/tmp/edscorbot-cpp/edcontroller
+edscorbot_test_SOURCE_DIR:STATIC=/home/adalberto/Downloads/tmp/edscorbot-cpp
 
 
 ########################
@@ -305,7 +305,7 @@ CMAKE_GENERATOR_PLATFORM:INTERNAL=
 CMAKE_GENERATOR_TOOLSET:INTERNAL=
 //Source directory with the top level CMakeLists.txt file for this
 // project
-CMAKE_HOME_DIRECTORY:INTERNAL=/home/adalberto/Downloads/tmp/edscorbot-cpp/edcontroller
+CMAKE_HOME_DIRECTORY:INTERNAL=/home/adalberto/Downloads/tmp/edscorbot-cpp
 //Install .so files without execute permission.
 CMAKE_INSTALL_SO_NO_EXE:INTERNAL=1
 //ADVANCED property for variable: CMAKE_LINKER

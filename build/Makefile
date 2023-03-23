@@ -57,7 +57,7 @@ RM = /snap/cmake/1271/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/adalberto/Downloads/tmp/edscorbot-cpp/edcontroller
+CMAKE_SOURCE_DIR = /home/adalberto/Downloads/tmp/edscorbot-cpp
 
 # The top-level build directory on which CMake was run.
 CMAKE_BINARY_DIR = /home/adalberto/Downloads/tmp/edscorbot-cpp/build
@@ -117,41 +117,78 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named test
+# Target rules for targets named mocked_server
 
 # Build rule for target.
-test: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 test
-.PHONY : test
+mocked_server: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 mocked_server
+.PHONY : mocked_server
 
 # fast build rule for target.
-test/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test.dir/build.make CMakeFiles/test.dir/build
-.PHONY : test/fast
+mocked_server/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mocked_server.dir/build.make CMakeFiles/mocked_server.dir/build
+.PHONY : mocked_server/fast
 
-mocked_server.o: mocked_server.cpp.o
-.PHONY : mocked_server.o
+#=============================================================================
+# Target rules for targets named tests_json
+
+# Build rule for target.
+tests_json: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 tests_json
+.PHONY : tests_json
+
+# fast build rule for target.
+tests_json/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/tests_json.dir/build.make CMakeFiles/tests_json.dir/build
+.PHONY : tests_json/fast
+
+src/mqtt-server/mocked_server.o: src/mqtt-server/mocked_server.cpp.o
+.PHONY : src/mqtt-server/mocked_server.o
 
 # target to build an object file
-mocked_server.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test.dir/build.make CMakeFiles/test.dir/mocked_server.cpp.o
-.PHONY : mocked_server.cpp.o
+src/mqtt-server/mocked_server.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mocked_server.dir/build.make CMakeFiles/mocked_server.dir/src/mqtt-server/mocked_server.cpp.o
+.PHONY : src/mqtt-server/mocked_server.cpp.o
 
-mocked_server.i: mocked_server.cpp.i
-.PHONY : mocked_server.i
+src/mqtt-server/mocked_server.i: src/mqtt-server/mocked_server.cpp.i
+.PHONY : src/mqtt-server/mocked_server.i
 
 # target to preprocess a source file
-mocked_server.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test.dir/build.make CMakeFiles/test.dir/mocked_server.cpp.i
-.PHONY : mocked_server.cpp.i
+src/mqtt-server/mocked_server.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mocked_server.dir/build.make CMakeFiles/mocked_server.dir/src/mqtt-server/mocked_server.cpp.i
+.PHONY : src/mqtt-server/mocked_server.cpp.i
 
-mocked_server.s: mocked_server.cpp.s
-.PHONY : mocked_server.s
+src/mqtt-server/mocked_server.s: src/mqtt-server/mocked_server.cpp.s
+.PHONY : src/mqtt-server/mocked_server.s
 
 # target to generate assembly for a file
-mocked_server.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test.dir/build.make CMakeFiles/test.dir/mocked_server.cpp.s
-.PHONY : mocked_server.cpp.s
+src/mqtt-server/mocked_server.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mocked_server.dir/build.make CMakeFiles/mocked_server.dir/src/mqtt-server/mocked_server.cpp.s
+.PHONY : src/mqtt-server/mocked_server.cpp.s
+
+src/tests/test_json.o: src/tests/test_json.cpp.o
+.PHONY : src/tests/test_json.o
+
+# target to build an object file
+src/tests/test_json.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/tests_json.dir/build.make CMakeFiles/tests_json.dir/src/tests/test_json.cpp.o
+.PHONY : src/tests/test_json.cpp.o
+
+src/tests/test_json.i: src/tests/test_json.cpp.i
+.PHONY : src/tests/test_json.i
+
+# target to preprocess a source file
+src/tests/test_json.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/tests_json.dir/build.make CMakeFiles/tests_json.dir/src/tests/test_json.cpp.i
+.PHONY : src/tests/test_json.cpp.i
+
+src/tests/test_json.s: src/tests/test_json.cpp.s
+.PHONY : src/tests/test_json.s
+
+# target to generate assembly for a file
+src/tests/test_json.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/tests_json.dir/build.make CMakeFiles/tests_json.dir/src/tests/test_json.cpp.s
+.PHONY : src/tests/test_json.cpp.s
 
 # Help Target
 help:
@@ -161,10 +198,14 @@ help:
 	@echo "... depend"
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
-	@echo "... test"
-	@echo "... mocked_server.o"
-	@echo "... mocked_server.i"
-	@echo "... mocked_server.s"
+	@echo "... mocked_server"
+	@echo "... tests_json"
+	@echo "... src/mqtt-server/mocked_server.o"
+	@echo "... src/mqtt-server/mocked_server.i"
+	@echo "... src/mqtt-server/mocked_server.s"
+	@echo "... src/tests/test_json.o"
+	@echo "... src/tests/test_json.i"
+	@echo "... src/tests/test_json.s"
 .PHONY : help
 
 

@@ -1,4 +1,4 @@
-# Install script for directory: /home/adalberto/Downloads/tmp/edscorbot-cpp/edcontroller
+# Install script for directory: /home/adalberto/Downloads/tmp/edscorbot-cpp
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)

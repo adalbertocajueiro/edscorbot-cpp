@@ -54,7 +54,7 @@ RM = /snap/cmake/1271/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/adalberto/Downloads/tmp/edscorbot-cpp/edcontroller
+CMAKE_SOURCE_DIR = /home/adalberto/Downloads/tmp/edscorbot-cpp
 
 # The top-level build directory on which CMake was run.
 CMAKE_BINARY_DIR = /home/adalberto/Downloads/tmp/edscorbot-cpp/build
@@ -63,7 +63,8 @@ CMAKE_BINARY_DIR = /home/adalberto/Downloads/tmp/edscorbot-cpp/build
 # Directory level rules for the build root directory
 
 # The main recursive "all" target.
-all: CMakeFiles/test.dir/all
+all: CMakeFiles/mocked_server.dir/all
+all: CMakeFiles/tests_json.dir/all
 .PHONY : all
 
 # The main recursive "preinstall" target.
@@ -71,34 +72,61 @@ preinstall:
 .PHONY : preinstall
 
 # The main recursive "clean" target.
-clean: CMakeFiles/test.dir/clean
+clean: CMakeFiles/mocked_server.dir/clean
+clean: CMakeFiles/tests_json.dir/clean
 .PHONY : clean
 
 #=============================================================================
-# Target rules for target CMakeFiles/test.dir
+# Target rules for target CMakeFiles/mocked_server.dir
 
 # All Build rule for target.
-CMakeFiles/test.dir/all:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test.dir/build.make CMakeFiles/test.dir/depend
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test.dir/build.make CMakeFiles/test.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/adalberto/Downloads/tmp/edscorbot-cpp/build/CMakeFiles --progress-num=1,2 "Built target test"
-.PHONY : CMakeFiles/test.dir/all
+CMakeFiles/mocked_server.dir/all:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mocked_server.dir/build.make CMakeFiles/mocked_server.dir/depend
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mocked_server.dir/build.make CMakeFiles/mocked_server.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/adalberto/Downloads/tmp/edscorbot-cpp/build/CMakeFiles --progress-num=1,2 "Built target mocked_server"
+.PHONY : CMakeFiles/mocked_server.dir/all
 
 # Build rule for subdir invocation for target.
-CMakeFiles/test.dir/rule: cmake_check_build_system
+CMakeFiles/mocked_server.dir/rule: cmake_check_build_system
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/adalberto/Downloads/tmp/edscorbot-cpp/build/CMakeFiles 2
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/test.dir/all
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/mocked_server.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/adalberto/Downloads/tmp/edscorbot-cpp/build/CMakeFiles 0
-.PHONY : CMakeFiles/test.dir/rule
+.PHONY : CMakeFiles/mocked_server.dir/rule
 
 # Convenience name for target.
-test: CMakeFiles/test.dir/rule
-.PHONY : test
+mocked_server: CMakeFiles/mocked_server.dir/rule
+.PHONY : mocked_server
 
 # clean rule for target.
-CMakeFiles/test.dir/clean:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test.dir/build.make CMakeFiles/test.dir/clean
-.PHONY : CMakeFiles/test.dir/clean
+CMakeFiles/mocked_server.dir/clean:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mocked_server.dir/build.make CMakeFiles/mocked_server.dir/clean
+.PHONY : CMakeFiles/mocked_server.dir/clean
+
+#=============================================================================
+# Target rules for target CMakeFiles/tests_json.dir
+
+# All Build rule for target.
+CMakeFiles/tests_json.dir/all:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/tests_json.dir/build.make CMakeFiles/tests_json.dir/depend
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/tests_json.dir/build.make CMakeFiles/tests_json.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/adalberto/Downloads/tmp/edscorbot-cpp/build/CMakeFiles --progress-num=3,4 "Built target tests_json"
+.PHONY : CMakeFiles/tests_json.dir/all
+
+# Build rule for subdir invocation for target.
+CMakeFiles/tests_json.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/adalberto/Downloads/tmp/edscorbot-cpp/build/CMakeFiles 2
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/tests_json.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/adalberto/Downloads/tmp/edscorbot-cpp/build/CMakeFiles 0
+.PHONY : CMakeFiles/tests_json.dir/rule
+
+# Convenience name for target.
+tests_json: CMakeFiles/tests_json.dir/rule
+.PHONY : tests_json
+
+# clean rule for target.
+CMakeFiles/tests_json.dir/clean:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/tests_json.dir/build.make CMakeFiles/tests_json.dir/clean
+.PHONY : CMakeFiles/tests_json.dir/clean
 
 #=============================================================================
 # Special targets to cleanup operation of make.

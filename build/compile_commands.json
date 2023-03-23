@@ -1,8 +1,14 @@
 [
 {
   "directory": "/home/adalberto/Downloads/tmp/edscorbot-cpp/build",
-  "command": "/usr/bin/aarch64-linux-gnu-g++  -I/home/adalberto/Downloads/tmp/edscorbot-cpp/edcontroller/.    -fPIC -DEDS_VERBOSE -g -std=c++17 -o CMakeFiles/test.dir/mocked_server.cpp.o -c /home/adalberto/Downloads/tmp/edscorbot-cpp/edcontroller/mocked_server.cpp",
-  "file": "/home/adalberto/Downloads/tmp/edscorbot-cpp/edcontroller/mocked_server.cpp",
-  "output": "CMakeFiles/test.dir/mocked_server.cpp.o"
+  "command": "/usr/bin/aarch64-linux-gnu-g++  -I/home/adalberto/Downloads/tmp/edscorbot-cpp/src    -fPIC -DEDS_VERBOSE -g -std=c++17 -o CMakeFiles/mocked_server.dir/src/mqtt-server/mocked_server.cpp.o -c /home/adalberto/Downloads/tmp/edscorbot-cpp/src/mqtt-server/mocked_server.cpp",
+  "file": "/home/adalberto/Downloads/tmp/edscorbot-cpp/src/mqtt-server/mocked_server.cpp",
+  "output": "CMakeFiles/mocked_server.dir/src/mqtt-server/mocked_server.cpp.o"
+},
+{
+  "directory": "/home/adalberto/Downloads/tmp/edscorbot-cpp/build",
+  "command": "/usr/bin/aarch64-linux-gnu-g++  -I/home/adalberto/Downloads/tmp/edscorbot-cpp/src    -fPIC -DEDS_VERBOSE -g -std=c++17 -o CMakeFiles/tests_json.dir/src/tests/test_json.cpp.o -c /home/adalberto/Downloads/tmp/edscorbot-cpp/src/tests/test_json.cpp",
+  "file": "/home/adalberto/Downloads/tmp/edscorbot-cpp/src/tests/test_json.cpp",
+  "output": "CMakeFiles/tests_json.dir/src/tests/test_json.cpp.o"
 }
 ]

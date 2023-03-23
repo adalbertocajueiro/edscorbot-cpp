@@ -10,6 +10,9 @@ const std::string META_INFO = "metainfo";
 const std::string COMMANDS = "EDScorbot/commands";
 const std::string MOVED = "EDScorbot/moved";
 
+//global flag representing error state of the robot
+static bool error_state = false;
+
 enum MetaInfoSignal {
     ARM_GET_METAINFO = 1,
     ARM_METAINFO = 2
@@ -42,6 +45,11 @@ class JointInfo {
         JointInfo(double min, double max) { 
             minimum = min;
             maximum = max;
+        }
+
+        bool operator == (JointInfo other) {
+            return this->maximum == other.maximum
+                    && this->minimum == other.minimum;
         }
 
         json to_json(){
@@ -87,6 +95,33 @@ class MetaInfoObject {
             name = n;
             joints = std::list<JointInfo>(jts);
         }
+
+        
+        bool operator == (MetaInfoObject other){
+            bool result = true;
+            result = result && this->signal == other.signal;
+            if(result){
+                result = result && strcmp(this->name.c_str(),other.name.c_str()) == 0;
+                if(result){
+                    result = result && this->joints.size() == other.joints.size();
+                    if(result){
+                        std::list<JointInfo> auxThis = std::list<JointInfo>(this->joints);
+                        std::list<JointInfo> auxOther = std::list<JointInfo>(other.joints);
+                        
+                        while (!auxThis.empty() && result){
+                            JointInfo jThis = auxThis.front();
+                            JointInfo jOther = auxOther.front();
+                            result = result && jThis == jOther;
+                            auxThis.erase(auxThis.begin());
+                            auxOther.erase(auxOther.begin());
+                        }
+                    }
+                    
+                }
+            } 
+            return result;
+        }
+            
         json to_json(){
             json result = json();
 
@@ -140,7 +175,11 @@ class Client {
         }
 
         bool is_valid(){
-            return strcmp(this->id.c_str(),"") == 0;
+            return strcmp(this->id.c_str(),"") != 0;
+        }
+
+        bool operator == (Client other){
+            return strcmp(this->id.c_str(),other.id.c_str()) == 0;
         }
 
         json to_json(){
@@ -160,37 +199,33 @@ class Client {
 
             Client result = Client();
             result.id = json_obj["id"];
+
+            return result;
         }
 
 };
 
-class CommandContent{
-    public:
-        virtual bool is_point();
-        virtual bool is_trajectory();
-        virtual json to_json();
-};
+static Client owner = Client();
 
 
-class Point : public CommandContent{
+class Point {
     public:
         std::list<double> coordinates;
         Point() {
             coordinates = std::list<double>();
         }
         Point(std::list<double> coords){
-            coordinates = std::list<double>(coords);
+            coordinates = coords;
+        }
+
+        bool operator == (Point other){
+            return this->coordinates == other.coordinates;
         }
 
         bool is_empty(){
             return this->coordinates.size() == 0;
         }
-        bool is_point(){
-            return true;
-        }
-        bool is_trajectory(){
-            return false;
-        }
+        
         json to_json(){
             json result = json();
             json coords = json::array();
@@ -224,7 +259,7 @@ class Point : public CommandContent{
         }
 };
 
-class Trajectory : public CommandContent{
+class Trajectory {
     public:
         std::list<Point> points;
         Trajectory(){
@@ -233,11 +268,26 @@ class Trajectory : public CommandContent{
         Trajectory(std::list<Point> pts){
             points = std::list<Point>(pts);
         };
-        bool is_point(){
-            return false;
+        bool is_empty(){
+            return this->points.size() == 0;
         }
-        bool is_trajectory(){
-            return true;
+
+        bool operator == (Trajectory other){
+            bool result = true;
+            result = result && this->points.size() == other.points.size();
+            if(result){
+                std::list<Point> auxThis = std::list<Point>(this->points);
+                std::list<Point> auxOther = std::list<Point>(other.points);
+                            
+                while (!auxThis.empty() && result){
+                    Point pThis = auxThis.front();
+                    Point pOther = auxOther.front();
+                    result = result && pThis == pOther;
+                    auxThis.erase(auxThis.begin());
+                    auxOther.erase(auxOther.begin());
+                }
+            }
+            return result;
         }
 
         json to_json(){
@@ -280,42 +330,95 @@ class CommandObject {
         CommandsSignal signal;
         Client client;
         bool error;
-        CommandContent content;
+        Point point;
+        Trajectory trajectory;
 
-        CommandObject(){
-            client = Client();
-            content = Point();
+        CommandObject(CommandsSignal sig){
+            signal = sig;
+            client = owner;
+            error = error_state;
+            point = Point();
+            trajectory = Trajectory();
         }
 
+        CommandObject(CommandsSignal sig, Point p){
+            signal = sig;
+            client = owner;
+            error = error_state;
+            point = p;
+            trajectory = Trajectory();
+        }
+
+        CommandObject(CommandsSignal sig, Trajectory t){
+            signal = sig;
+            client = owner;
+            error = error_state;
+            point = Point();
+            trajectory = t;
+        }
+
+    
+        bool operator == (CommandObject other){
+            bool result = true;
+
+            result = result && this->signal == other.signal;
+            if(result){
+                result = result && this->client == other.client;
+                if(result){
+                    if(point.is_empty()){
+                        result = result 
+                            && this->trajectory == other.trajectory;
+                    } else {
+                        result = result && 
+                            this->point == other.point;
+                    }
+                    
+                }
+            }
+            return result;
+        }
+        
         json to_json(){
             json result = json();
             result["signal"] = signal;
-            result["client"] = client.to_json();
+            if(client.is_valid()){
+                result["client"] = client.to_json();
+            }
             result["error"] = error_state;
-            result["content"] = content.to_json();
-
-            return result;
-        }
-
-        static Trajectory from_json(json json_obj){
-            return from_json_string(json_obj.dump());
-        }
-
-        static Trajectory from_json_string(std::string json_string){
-            json json_obj = json::parse(json_string);
-
-
-            Trajectory result = Trajectory();
-            
-            json points = json_obj["points"];
-           
-            for (json::iterator it = points.begin(); it != points.end(); ++it) {
-                Point p = Point::from_json(it.value());
-                result.points.push_back(p);
+            if(!point.is_empty()){
+                result["point"] =  this->point.to_json();
+            } else {
+                if(!trajectory.is_empty()){
+                    result["trajectory"] =  this->trajectory.to_json();
+                }
             }
 
             return result;
         }
+
+        static CommandObject from_json(json json_obj){
+            return from_json_string(json_obj.dump());
+        }
+
+        static CommandObject from_json_string(std::string json_string){
+            json json_obj = json::parse(json_string);
+            CommandObject result = CommandObject(json_obj["signal"]);
+            if(json_obj.contains("client")){
+                Client cli = Client::from_json(json_obj["client"]);
+                result.client = cli;
+            }
+            if(json_obj.contains("point")){ //contains point
+                Point p = Point::from_json(json_obj["point"]);
+                result.point = p;
+            } else { //constains trajectory
+                if(json_obj.contains("trajectory")){
+                    Trajectory t = Trajectory::from_json(json_obj["trajectory"]);
+                    result.trajectory = t;
+                }    
+            }
+            return result;
+        }
+
 };
 
 
@@ -330,17 +433,18 @@ const std::list<JointInfo> METAINFOS =
     JointInfo(0, 100)
 };
 
-//global flag representing error state of the robot
-static bool error_state = false;
-
-//represents the initial owner of the arm. it contains an empty id
-static Client owner = Client();
 
 //signatures of useful functions
 void handle_response(struct mosquitto *mosq, void *obj, const struct mosquitto_message *message);
 
-void *publish(const char *topic, const char *buf);
+void *publish_message(const char *topic, const char *buf);
+
+bool has_signal(std::string message);
 
 int extract_signal(std::string message);
 
 MetaInfoObject initial_metainfoobj();
+
+void handle_metainfo_message(std::string mesage);
+
+void handle_commands_message(std::string mesage);

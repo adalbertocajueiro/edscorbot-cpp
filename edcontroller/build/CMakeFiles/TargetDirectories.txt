@@ -1,3 +1,0 @@
-/home/adalberto/Downloads/tmp/edscorbot-cpp/edcontroller/build/CMakeFiles/test.dir
-/home/adalberto/Downloads/tmp/edscorbot-cpp/edcontroller/build/CMakeFiles/edit_cache.dir
-/home/adalberto/Downloads/tmp/edscorbot-cpp/edcontroller/build/CMakeFiles/rebuild_cache.dir

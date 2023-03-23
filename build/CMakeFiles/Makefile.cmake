@@ -7,10 +7,10 @@ set(CMAKE_DEPENDS_GENERATOR "Unix Makefiles")
 # The top level Makefile was generated from the following files:
 set(CMAKE_MAKEFILE_DEPENDS
   "CMakeCache.txt"
+  "/home/adalberto/Downloads/tmp/edscorbot-cpp/CMakeLists.txt"
   "CMakeFiles/3.26.0/CMakeCCompiler.cmake"
   "CMakeFiles/3.26.0/CMakeCXXCompiler.cmake"
   "CMakeFiles/3.26.0/CMakeSystem.cmake"
-  "/home/adalberto/Downloads/tmp/edscorbot-cpp/edcontroller/CMakeLists.txt"
   "/snap/cmake/1271/share/cmake-3.26/Modules/CMakeCInformation.cmake"
   "/snap/cmake/1271/share/cmake-3.26/Modules/CMakeCXXInformation.cmake"
   "/snap/cmake/1271/share/cmake-3.26/Modules/CMakeCommonLanguageInclude.cmake"
@@ -43,5 +43,6 @@ set(CMAKE_MAKEFILE_PRODUCTS
 
 # Dependency information for all targets:
 set(CMAKE_DEPEND_INFO_FILES
-  "CMakeFiles/test.dir/DependInfo.cmake"
+  "CMakeFiles/mocked_server.dir/DependInfo.cmake"
+  "CMakeFiles/tests_json.dir/DependInfo.cmake"
   )

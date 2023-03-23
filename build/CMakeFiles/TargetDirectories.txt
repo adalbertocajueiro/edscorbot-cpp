@@ -1,3 +1,4 @@
-/home/adalberto/Downloads/tmp/edscorbot-cpp/build/CMakeFiles/test.dir
+/home/adalberto/Downloads/tmp/edscorbot-cpp/build/CMakeFiles/mocked_server.dir
+/home/adalberto/Downloads/tmp/edscorbot-cpp/build/CMakeFiles/tests_json.dir
 /home/adalberto/Downloads/tmp/edscorbot-cpp/build/CMakeFiles/edit_cache.dir
 /home/adalberto/Downloads/tmp/edscorbot-cpp/build/CMakeFiles/rebuild_cache.dir
