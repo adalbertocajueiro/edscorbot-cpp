@@ -22,7 +22,7 @@ typedef struct
 
 progress_info progress;
 
-bool executingTrajectory = false;
+bool executing_trajectory = false;
 
 void parse_command(char *command, int *t, char *m, char *url, int *n,int* sleep);
 void ftp_trajectory(char *url);
@@ -81,8 +81,115 @@ void handle_metainfo_message(std::string mesage){
 	publish_message("metainfo",mi.to_json().dump().c_str());
 }
 
-void handle_commands_message(std::string mesage){
+void handle_commands_message(const struct mosquitto_message *message){
+	int sig = extract_signal((char *)message->payload);
+	CommandObject output = CommandObject(ARM_STATUS);
+				CommandObject receivedCommand = CommandObject::from_json_string((char *)message->payload);
+				switch (sig){				
+					case ARM_CHECK_STATUS:
+						std::cout << "Request status received. " << " Sending message..." << std::endl;
+						publish_message("EDScorbot/commands",output.to_json().dump().c_str());
+						break;
+					case ARM_CONNECT:
+						std::cout << "Request comnnect received. " << " Sending message..." << std::endl;
+						
+						if(!owner.is_valid()){
+							owner = receivedCommand.client;
+							output.signal = ARM_CONNECTED;
+							output.client = owner;
+							publish_message("EDScorbot/commands",output.to_json().dump().c_str());
+							std::cout << "Moving arm to home..." << std::endl;
+							sleep(4);
+							std::cout << "Home position reached" << std::endl;
+							output.signal = ARM_HOME_SEARCHED;
+							publish_message("EDScorbot/commands",output.to_json().dump().c_str());
+						} else{
+							std::cout << "Connection refused. Arm is busy" << std::endl;
+						}
+						
+						break;
+					case ARM_MOVE_TO_POINT:
+						std::cout << "Move to point request received. " << std::endl;
+						
+						if(owner.is_valid()){
+							Client client = receivedCommand.client;
+							if(owner == client){	
+								Point target = receivedCommand.point;
+								//if the point does not come within the message?
+								move_to_point_and_publish(target);
+							} else {
+								//other client is trying to move the arm ==> ignore
+							}
+						} else {
+							//arm has no owner ==> ignore
+						}
+						break;
+					case ARM_APPLY_TRAJECTORY:
+						std::cout << "Apply trajectory received. " << std::endl;
+						if(owner.is_valid()){
+							Client client = receivedCommand.client;
+							if(owner == client){	
+								Trajectory traj = receivedCommand.trajectory;
+								apply_trajectory_and_publish(traj);
+							} else {
+								//other client is trying to move the arm ==> ignore
+							}
+						} else {
+							//arm has no owner ==> ignore
+						}
+						break;
+					case ARM_CANCEL_TRAJECTORY:
+						std::cout << "Cancel trajectory received. " << std::endl;
+						if(owner.is_valid()){
+							executing_trajectory = false;
+							output.signal = ARM_CANCELED_TRAJECTORY;
+							output.client = owner;
+							output.error = error_state;
+							publish_message("EDScorbot/commands",output.to_json().dump().c_str());
+							std::cout << "Trajectory cancelled. " << std::endl;
+						} else {
+							//arm has no owner ==> ignore
+						}
+						break;
+					case ARM_DISCONNECT:
+						std::cout << "Request disconnect received. " << std::endl;
+						Client c = receivedCommand.client;
+						if(c == owner){
+							owner = Client();
+							output.signal = ARM_DISCONNECTED;
+							output.client = c;
+							publish_message("EDScorbot/commands",output.to_json().dump().c_str());
+							std::cout << "Client disconnected" << std::endl;
+						}
+						
+						break;
+				}
+}
 
+void move_to_point_and_publish(Point point) {
+    std::cout << "Moving arm to point " << point.to_json().dump() << std::endl;
+	sleep(1);
+	//TODO
+	// invoke command to move the arm to a specific position (point with degrees)
+	// gets the values and build a real point 
+	Point realPoint = point; //change this assignment with the real point coordinates
+	MovedObject output = MovedObject();
+	output.client = owner;
+    output.error = error_state;
+    output.content = realPoint; //
+    publish_message("EDScorbot/moved",output.to_json().dump().c_str());
+	std::cout << "Point published " << output.to_json().dump().c_str() << std::endl;
+}
+
+void apply_trajectory_and_publish(Trajectory trajectory){
+	std::list<Point> points = std::list<Point>(trajectory.points);
+	executing_trajectory = true;
+	while (!points.empty() && executing_trajectory){
+        Point p = points.front();
+		move_to_point_and_publish(p);
+		points.erase(points.begin());
+	}
+	executing_trajectory = false;
 }
 
 void message_callback(struct mosquitto *mosq, void *obj, const struct mosquitto_message *message)
@@ -103,41 +210,7 @@ void message_callback(struct mosquitto *mosq, void *obj, const struct mosquitto_
 		} else {
 			match = std::strcmp(message->topic,"EDScorbot/commands") == 0;
 			if (match){
-				// std::cout << "Message received on channel EDScorbot/commands: " << message->payload << std::endl;
-				CommandObject output = CommandObject(ARM_STATUS);
-				CommandObject receivedCommand = CommandObject::from_json_string((char *)message->payload);
-				switch (sig){				
-					case ARM_CHECK_STATUS:
-						std::cout << "Request status received. " << " Sending message..." << std::endl;
-						publish_message("EDScorbot/commands",output.to_json().dump().c_str());
-						break;
-					case ARM_CONNECT:
-						std::cout << "Request comnnect received. " << " Sending message..." << std::endl;
-						
-						if(!owner.is_valid()){
-							owner = receivedCommand.client;
-							output.signal = ARM_CONNECTED;
-							output.client = owner;
-							publish_message("EDScorbot/commands",output.to_json().dump().c_str());
-							std::cout << "Moving arm to home..." << std::endl;
-							sleep(6);
-							std::cout << "Home position reached" << std::endl;
-							output.signal = ARM_HOME_SEARCHED;
-							publish_message("EDScorbot/commands",output.to_json().dump().c_str());
-						} else{
-							std::cout << "Connection refused. Arm is busy" << std::endl;
-						}
-						
-						break;
-					case ARM_MOVE_TO_POINT:
-						break;
-					case ARM_APPLY_TRAJECTORY:
-						break;
-					case ARM_CANCEL_TRAJECTORY:
-						break;
-					case ARM_DISCONNECT:
-						break;
-				}
+				handle_commands_message(message);
 				
 			}
 		}

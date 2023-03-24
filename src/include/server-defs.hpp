@@ -418,9 +418,55 @@ class CommandObject {
             }
             return result;
         }
-
 };
 
+class MovedObject {
+    public:
+        Client client;
+        bool error;
+        Point content;
+
+        MovedObject(){
+            client = owner;
+            error = error_state;
+        }
+
+        MovedObject(Point p){
+            client = owner;
+            error = error_state;
+            content = p;
+        }
+
+        bool operator == (MovedObject other) {
+            return content == other.content;
+        }
+
+        json to_json(){
+            json result = json();
+            result["client"] = client.to_json();
+            result["error"] = error_state;
+            result["content"] = content.to_json();
+
+            return result;
+        }
+        static MovedObject from_json(json json_obj){
+            return from_json_string(json_obj.dump());
+        }
+
+        static MovedObject from_json_string(std::string json_string){
+            json json_obj = json::parse(json_string);
+            MovedObject result = MovedObject();
+            Client cli = Client::from_json(json_obj["client"]);
+            bool error = json_obj["error"];
+            Point p = Point::from_json(json_obj["content"]);
+            result.client = cli;
+            result.error = error;
+            result.content = p;
+
+            return result;
+        }
+};
+   
 
 // joints informed in static way
 const std::list<JointInfo> METAINFOS = 
@@ -448,3 +494,7 @@ MetaInfoObject initial_metainfoobj();
 void handle_metainfo_message(std::string mesage);
 
 void handle_commands_message(std::string mesage);
+
+void move_to_point_and_publish(Point point);
+
+void apply_trajectory_and_publish(Trajectory trajectory);

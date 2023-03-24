@@ -95,10 +95,36 @@ void test_commandobj(){
     test_str_to_commandobj(comm2.to_json().dump().c_str(),comm2);
 }
 
+
+void test_movedobj_to_str(MovedObject c){
+    std::cout << std::endl << "Testing conversion from movedobj to str" << std::endl;
+    std::cout << "Movedobj: " << c.to_json().dump() ;
+    
+    std::cout << " (PASSED)" << std::endl;
+}
+
+void test_str_to_movedobj(std::string json_str,MovedObject expected){
+    std::cout << std::endl << "Testing conversion from str to movedObj" << std::endl;
+    std::cout << "String: " << json_str << std::endl;
+    assert( MovedObject::from_json_string(json_str) == expected);
+    std::cout << " (PASSED)" << std::endl;
+}
+
+void test_movedobj(){
+    MovedObject m = MovedObject();
+    m.client = Client("adalberto");
+    m.error = false;
+    m.content = Point({1,2,3,4});
+
+    test_movedobj_to_str(m);
+    test_str_to_movedobj(m.to_json().dump(), m);
+}
+
 int main(int argc, char *argv[])
 {
     std::cout << "Starting tests" << std::endl;
     test_client();
     test_metainfo();
     test_commandobj();
+    test_movedobj();
 }
